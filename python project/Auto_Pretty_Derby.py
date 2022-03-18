@@ -4,6 +4,7 @@ import os
 import cv2
 import aircv as ac
 '''对应分辨率2340x1080，稍微有几像素出入应该没问题吧'''
+devices = "9FK5T19430020327" #在终端输入adb devices后出现的设备名
 def shitu(tofind):#查找对应图片并点击
     imsrc = ac.imread(img_path)  # 原始图像
     imsch1 = ac.imread(tofind)  # 带查找的部分
@@ -225,7 +226,6 @@ guanbi = r"D:/python project/ppc/shuc/guanbi.png"#关闭
 tanchu = r"D:/python project/ppc/shuc/tanchu.png"#弹出
 img_path = r"d:/a/xn.png"#截图保存位置
 minMatch = 0.9 #最小相似度
-devices = "9FK5T19430020327" #adb设备名
 os.system("adb devices")
 while(True):
     dabisai()
