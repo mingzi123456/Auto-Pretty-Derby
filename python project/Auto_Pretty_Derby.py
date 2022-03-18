@@ -1,11 +1,9 @@
 from PIL import Image
-import numpy as np
 import time
 import os
 import cv2
 import aircv as ac
-import sys
-
+'''对应分辨率2340x1080，稍微有几像素出入应该没问题吧'''
 def shitu(tofind):#查找对应图片并点击
     imsrc = ac.imread(img_path)  # 原始图像
     imsch1 = ac.imread(tofind)  # 带查找的部分
@@ -16,7 +14,7 @@ def shitu(tofind):#查找对应图片并点击
         x1, y1 = match_result['result']
         print("\033[1;33m  %s \033[0m" % (match_result['confidence']))
         time.sleep(0.5)
-        os.system("adb -s %s shell input tap %s %s" % (jiekou,x1, y1))
+        os.system("adb -s %s shell input tap %s %s" % (devices,x1, y1))
         time.sleep(0.5)
         return True
     else:
@@ -79,8 +77,8 @@ def caigou():
         print("停止采购")
 
 def jietu():#手机截图，一开始没有定义，后面用太多了才定义的
-    os.system("adb -s %s shell screencap -p sdcard/screen.png"% jiekou)  # 截取屏幕，图片命名为screen.png
-    os.system("adb -s %s pull sdcard/screen.png  d:\\a\\xn.png"% jiekou)  # 保存到D盘a文件夹
+    os.system("adb -s %s shell screencap -p sdcard/screen.png"% devices)  # 截取屏幕，图片命名为screen.png
+    os.system("adb -s %s pull sdcard/screen.png  d:\\a\\xn.png"% devices)  # 保存到D盘a文件夹
     img = cv2.imread(img_path)
     gray_image = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     cv2.imwrite(r"d:/a/xn.png", gray_image)
@@ -116,7 +114,7 @@ def dabisai():
         jietu()
         print("比赛结果")
     while (shitu(ci) == False):
-        os.system("adb -s %s shell input tap 553 1892"% jiekou)
+        os.system("adb -s %s shell input tap 553 1892"% devices)
         time.sleep(1)
         jietu()
         print("次")
@@ -172,7 +170,7 @@ def goumai(tobuy):
         print('match :  %s' % (match_result2))
         if match_result2 == None:
             print("可以交换")
-            os.system("adb -s %s shell input tap %s %s"%(jiekou,x1+790 ,y1))
+            os.system("adb -s %s shell input tap %s %s"%(devices,x1+790 ,y1))
             while(shitu(shiyong) == False):
                 jietu()
             while (shitu(shiyong2) == False):
@@ -227,7 +225,7 @@ guanbi = r"D:/python project/ppc/shuc/guanbi.png"#关闭
 tanchu = r"D:/python project/ppc/shuc/tanchu.png"#弹出
 img_path = r"d:/a/xn.png"#截图保存位置
 minMatch = 0.9 #最小相似度
-jiekou = "9FK5T19430020327" #adb设备名
+devices = "9FK5T19430020327" #adb设备名
 os.system("adb devices")
 while(True):
     dabisai()
